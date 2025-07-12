@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %} Editar reporte {% endblock %}
+
+{% load static %}
+{% block body %}
+<div class="container d-flex justify-content-center align-items-start py-3" style="min-height: 100vh;">
+    <div class="card" style="width: 30rem;">
+        <div class="card-header">
+            <h3>Editar reporte con ID: {{ reporte.id_delito }}</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="editar_reporte/actualizar_reporte/{{ reporte.gid }}">{% csrf_token %} <!--para evitar que el cliente transmita datos de forma no autorizada-->
+                <div class="form-group">
+                    <label for="anio_hecho" class="form-label">Año en que ocurrio</label>
+                    <input type="number" class="form-control" id="anio_hecho" name="anio_hecho" value="{{ reporte.anio_hecho }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="mes_hecho" class="form-label">Mes en que ocurrio</label>
+                    <input type="text" class="form-control" id="mes_hecho" name="mes_hecho" value="{{ reporte.mes_hecho }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="hora_delito" class="form-label">Hora del delito</label>
+                    <input type="time" class="form-control" id="hora_delito" name="hora_delito" required>
+                </div>
+                <div class="form-group">
+                    <label for="delito" class="form-label">Descripcion</label>
+                    <input type="text" class="form-control" id="delito" name="delito" value="{{ reporte.delito }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoria_delito" class="form-label">Categoria</label>
+                    <select class="form-select" id="categoria_delito" name="categoria_delito" required>
+                        <option value="{{ reporte.categoria_delito }}" disabled selected>{{ reporte.categoria_delito }}</option>
+                        <option value="DELITO DE BAJO IMPACTO">DELITO DE BAJO IMPACTO</option>
+                        <option value="HOMICIDIO DOLOSO">HOMICIDIO DOLOSO</option>
+                        <option value="LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO">LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO</option>
+                        <option value="ROBO A CASA HABITACIÓN CON VIOLENCIA">ROBO A CASA HABITACIÓN CON VIOLENCIA</option>
+                        <option value="ROBO A CUENTAHABIENTE SALIENDO DEL CAJERO CON VIOLENCIA">ROBO A CUENTAHABIENTE SALIENDO DEL CAJERO CON VIOLENCIA</option>
+                        <option value="ROBO A NEGOCIO CON VIOLENCIA">ROBO A NEGOCIO CON VIOLENCIA</option>
+                        <option value="ROBO A PASAJERO A BORDO DE MICROBUS CON Y SIN VIOLENCIA">ROBO A PASAJERO A BORDO DE MICROBUS CON Y SIN VIOLENCIA</option>
+                        <option value="ROBO A PASAJERO A BORDO DE TAXI CON VIOLENCIA">ROBO A PASAJERO A BORDO DE TAXI CON VIOLENCIA</option>
+                        <option value="ROBO A PASAJERO A BORDO DEL METRO CON Y SIN VIOLENCIA">ROBO A PASAJERO A BORDO DEL METRO CON Y SIN VIOLENCIA</option>
+                        <option value="ROBO A REPARTIDOR CON Y SIN VIOLENCIA">ROBO A REPARTIDOR CON Y SIN VIOLENCIA</option>
+                        <option value="ROBO A TRANSEUNTE EN VÍA PÚBLICA CON Y SIN VIOLENCIA">ROBO A TRANSEUNTE EN VÍA PÚBLICA CON Y SIN VIOLENCIA</option>
+                        <option value="ROBO A TRANSPORTISTA CON Y SIN VIOLENCIA">ROBO A TRANSPORTISTA CON Y SIN VIOLENCIA</option>
+                        <option value="ROBO DE VEHÍCULO CON Y SIN VIOLENCIA">ROBO DE VEHÍCULO CON Y SIN VIOLENCIA</option>
+                        <option value="SECUESTRO">SECUESTRO</option>
+                        <option value=VIOLACIÓN>VIOLACIÓN</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="impacto" class="form-label">Impacto</label>
+                    <select class="form-select" id="impacto" name="impacto" required>
+                        <option value="{{ reporte.impacto_delito }}" disabled selected>{{ reporte.impacto_delito }}</option>
+                        <option value="DELITO DE BAJO IMPACTO">BAJO IMPACTO</option>
+                        <option value="DELITO DE ALTO IMPACTO">ALTO IMPACTO</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="alcaldia" class="form-label">Alcaldia</label>
+                    <select class="form-select" id="alcaldia" name="alcaldia" required>
+                        <option value="{{ reporte.alcaldia }}" disabled selected>{{ reporte.alcaldia }}</option>
+                        <option value="ALVARO OBREGON">ÁLVARO OBREGÓN</option>
+                        <option value="AZCAPOTZALCO">AZCAPOTZALCO</option>
+                        <option value="BENITO JUAREZ">BENITO JUÁREZ</option>
+                        <option value="COYOACAN">COYOACÁN</option>
+                        <option value="CUAJIMALPA DE MORELOS">CUAJIMALPA DE MORELOS</option>
+                        <option value="CUAUHTEMOC">CUAUHTÉMOC</option>
+                        <option value="GUSTAVO A. MADERO">GUSTAVO A. MADERO</option>
+                        <option value="IZTACALCO">IZTACALCO</option>
+                        <option value="IZTAPALAPA">IZTAPALAPA</option>
+                        <option value="LA MAGDALENA CONTRERAS">LA MAGDALENA CONTRERAS</option>
+                        <option value="MIGUEL HIDALGO">MIGUEL HIDALGO</option>
+                        <option value="MILPA ALTA">MILPA ALTA</option>
+                        <option value="TLAHUAC">TLAHUAC</option>
+                        <option value="TLALPAN">TLALPAN</option>
+                        <option value="VENUSTIANO CARRANZA">VENUSTIANO CARRANZA</option>
+                        <option value="XOCHIMILCO">XOCHIMILCO</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cve_col" class="form-label">cve_col</label>
+                    <input type="text" class="form-control" id="cve_col" name="cve_col" value="{{ reporte.cve_col }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="colonia" class="form-label">Colonia</label>
+                    <input type="text" class="form-control" id="colonia" name="colonia" value="{{ reporte.colonia }}" required>
+                </div>
+                <div class="form-group">
+                        <label for="mapa">Ubique en el mapa el lugar del hecho</label>
+                        <div id="mapa" style="height: 300px; margin-bottom: 1em;"></div>
+                        <input type="hidden" id="latitud" name="latitud" value="{{ reporte.latitud }}">
+                        <input type="hidden" id="longitud" name="longitud" value="{{ reporte.longitud }}">
+                    </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-block">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--<script src="../static/js/mapa.js"></script>-->
+<script src="{% static 'js/mapa.js' %}"></script>
+{% endblock %}
