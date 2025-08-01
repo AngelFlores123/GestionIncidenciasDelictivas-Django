@@ -1,104 +1,124 @@
 {% extends "./base.html" %}
+{% load static %}
 
 {% block title %} Gestion de Reportes {% endblock %}
 
 {% block body %}
     <!-- FILTROS DE BUSQUEDA -->
-    <div class="container-fluid my-3 justify-content-center align-items-center">
-        <form method="get" class="d-flex flex-wrap align-items-end gap-3">
-            <div class="form-group mb-0">
-                <label for="categoria_filtro">Categoría</label>
-                <select class="form-control" name="categoria_filtro" id="categoria_filtro">
-                    <option value="" {% if not categoria %}selected{% endif %}>Todas</option>
-                    <option value="DELITO DE BAJO IMPACTO" {% if categoria == "DELITO DE BAJO IMPACTO" %}selected{% endif %}>DELITO DE BAJO IMPACTO</option>
-                    <option value="HOMICIDIO DOLOSO" {% if categoria == "HOMICIDIO DOLOSO" %}selected{% endif %}>HOMICIDIO DOLOSO</option>
-                    <option value="LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO" {% if categoria == "LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO" %}selected{% endif %}>LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO</option>
-                    <option value="ROBO A CASA HABITACIÓN CON VIOLENCIA" {% if categoria == "ROBO A CASA HABITACIÓN CON VIOLENCIA" %}selected{% endif %}>ROBO A CASA HABITACIÓN CON VIOLENCIA</option>
-                    <option value="ROBO A CUENTAHABIENTE SALIENDO DEL CAJERO CON VIOLENCIA" {% if categoria == "ROBO A CUENTAHABIENTE SALIENDO DEL CAJERO CON VIOLENCIA" %}selected{% endif %}>ROBO A CUENTAHABIENTE SALIENDO DEL CAJERO CON VIOLENCIA</option>
-                    <option value="ROBO A NEGOCIO CON VIOLENCIA" {% if categoria == "ROBO A NEGOCIO CON VIOLENCIA" %}selected{% endif %}>ROBO A NEGOCIO CON VIOLENCIA</option>
-                    <option value="ROBO A PASAJERO A BORDO DE MICROBUS CON Y SIN VIOLENCIA" {% if categoria == "ROBO A PASAJERO A BORDO DE MICROBUS CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A PASAJERO A BORDO DE MICROBUS CON Y SIN VIOLENCIA</option>
-                    <option value="ROBO A PASAJERO A BORDO DE TAXI CON VIOLENCIA" {% if categoria == "ROBO A PASAJERO A BORDO DE TAXI CON VIOLENCIA" %}selected{% endif %}>ROBO A PASAJERO A BORDO DE TAXI CON VIOLENCIA</option>
-                    <option value="ROBO A PASAJERO A BORDO DEL METRO CON Y SIN VIOLENCIA" {% if categoria == "ROBO A PASAJERO A BORDO DEL METRO CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A PASAJERO A BORDO DEL METRO CON Y SIN VIOLENCIA</option>
-                    <option value="ROBO A REPARTIDOR CON Y SIN VIOLENCIA" {% if categoria == "ROBO A REPARTIDOR CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A REPARTIDOR CON Y SIN VIOLENCIA</option>
-                    <option value="ROBO A TRANSEUNTE EN VÍA PÚBLICA CON Y SIN VIOLENCIA" {% if categoria == "ROBO A TRANSEUNTE EN VÍA PÚBLICA CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A TRANSEUNTE EN VÍA PÚBLICA CON Y SIN VIOLENCIA</option>
-                    <option value="ROBO A TRANSPORTISTA CON Y SIN VIOLENCIA" {% if categoria == "ROBO A TRANSPORTISTA CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A TRANSPORTISTA CON Y SIN VIOLENCIA</option>
-                    <option value="ROBO DE VEHÍCULO CON Y SIN VIOLENCIA" {% if categoria == "ROBO DE VEHÍCULO CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO DE VEHÍCULO CON Y SIN VIOLENCIA</option>
-                    <option value="SECUESTRO" {% if categoria == "SECUESTRO" %}selected{% endif %}>SECUESTRO</option>
-                    <option value="VIOLACIÓN" {% if categoria == "VIOLACIÓN" %}selected{% endif %}>VIOLACIÓN</option>
-                </select>
-            </div>
+     <br>
+     <div class="card">
+        <div class="card-body">
+            <div class="container-fluid my-3 justify-content-center align-items-center">
+                <form method="get" class="d-flex flex-wrap align-items-end gap-3">
+                    <div class="form-group mb-0">
+                        <label for="categoria_filtro">Categoría</label>
+                        <select class="form-control" name="categoria_filtro" id="categoria_filtro">
+                            <option value="" {% if not categoria %}selected{% endif %}>Todas</option>
+                            <option value="DELITO DE BAJO IMPACTO" {% if categoria == "DELITO DE BAJO IMPACTO" %}selected{% endif %}>DELITO DE BAJO IMPACTO</option>
+                            <option value="HOMICIDIO DOLOSO" {% if categoria == "HOMICIDIO DOLOSO" %}selected{% endif %}>HOMICIDIO DOLOSO</option>
+                            <option value="LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO" {% if categoria == "LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO" %}selected{% endif %}>LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO</option>
+                            <option value="ROBO A CASA HABITACIÓN CON VIOLENCIA" {% if categoria == "ROBO A CASA HABITACIÓN CON VIOLENCIA" %}selected{% endif %}>ROBO A CASA HABITACIÓN CON VIOLENCIA</option>
+                            <option value="ROBO A CUENTAHABIENTE SALIENDO DEL CAJERO CON VIOLENCIA" {% if categoria == "ROBO A CUENTAHABIENTE SALIENDO DEL CAJERO CON VIOLENCIA" %}selected{% endif %}>ROBO A CUENTAHABIENTE SALIENDO DEL CAJERO CON VIOLENCIA</option>
+                            <option value="ROBO A NEGOCIO CON VIOLENCIA" {% if categoria == "ROBO A NEGOCIO CON VIOLENCIA" %}selected{% endif %}>ROBO A NEGOCIO CON VIOLENCIA</option>
+                            <option value="ROBO A PASAJERO A BORDO DE MICROBUS CON Y SIN VIOLENCIA" {% if categoria == "ROBO A PASAJERO A BORDO DE MICROBUS CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A PASAJERO A BORDO DE MICROBUS CON Y SIN VIOLENCIA</option>
+                            <option value="ROBO A PASAJERO A BORDO DE TAXI CON VIOLENCIA" {% if categoria == "ROBO A PASAJERO A BORDO DE TAXI CON VIOLENCIA" %}selected{% endif %}>ROBO A PASAJERO A BORDO DE TAXI CON VIOLENCIA</option>
+                            <option value="ROBO A PASAJERO A BORDO DEL METRO CON Y SIN VIOLENCIA" {% if categoria == "ROBO A PASAJERO A BORDO DEL METRO CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A PASAJERO A BORDO DEL METRO CON Y SIN VIOLENCIA</option>
+                            <option value="ROBO A REPARTIDOR CON Y SIN VIOLENCIA" {% if categoria == "ROBO A REPARTIDOR CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A REPARTIDOR CON Y SIN VIOLENCIA</option>
+                            <option value="ROBO A TRANSEUNTE EN VÍA PÚBLICA CON Y SIN VIOLENCIA" {% if categoria == "ROBO A TRANSEUNTE EN VÍA PÚBLICA CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A TRANSEUNTE EN VÍA PÚBLICA CON Y SIN VIOLENCIA</option>
+                            <option value="ROBO A TRANSPORTISTA CON Y SIN VIOLENCIA" {% if categoria == "ROBO A TRANSPORTISTA CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO A TRANSPORTISTA CON Y SIN VIOLENCIA</option>
+                            <option value="ROBO DE VEHÍCULO CON Y SIN VIOLENCIA" {% if categoria == "ROBO DE VEHÍCULO CON Y SIN VIOLENCIA" %}selected{% endif %}>ROBO DE VEHÍCULO CON Y SIN VIOLENCIA</option>
+                            <option value="SECUESTRO" {% if categoria == "SECUESTRO" %}selected{% endif %}>SECUESTRO</option>
+                            <option value="VIOLACIÓN" {% if categoria == "VIOLACIÓN" %}selected{% endif %}>VIOLACIÓN</option>
+                        </select>
+                    </div>
 
-            <!-- Filtro: Impacto -->
-            <div class="form-group mb-0">
-                <label for="impacto_filtro">Impacto</label>
-                <select class="form-control" name="impacto_filtro" id="impacto_filtro">
-                    <option value="" {% if not impacto %}selected{% endif %}>Todas</option>
-                    <option value="BAJO IMPACTO" {% if impacto == "BAJO IMPACTO" %}selected{% endif %}>BAJO IMPACTO</option>
-                    <option value="ALTO IMPACTO" {% if impacto == "ALTO IMPACTO" %}selected{% endif %}>ALTO IMPACTO</option>
-                </select>
+                    <!-- Filtro: Impacto -->
+                    <div class="form-group mb-0">
+                        <label for="impacto_filtro">Impacto</label>
+                        <select class="form-control" name="impacto_filtro" id="impacto_filtro">
+                            <option value="" {% if not impacto %}selected{% endif %}>Todas</option>
+                            <option value="BAJO IMPACTO" {% if impacto == "BAJO IMPACTO" %}selected{% endif %}>BAJO IMPACTO</option>
+                            <option value="ALTO IMPACTO" {% if impacto == "ALTO IMPACTO" %}selected{% endif %}>ALTO IMPACTO</option>
+                        </select>
+                    </div>
+                
+                    <!-- Filtro: Alcaldia -->
+                    <div class="form-group mb-0">
+                        <label for="alcaldia_filtro">Alcaldía</label>
+                        <select class="form-control" name="alcaldia_filtro" id="alcaldia_filtro">
+                            <option value="" {% if not alcaldia %}selected{% endif %}>Todas</option>
+                            <option value="ALVARO OBREGON" {% if alcaldia == "ALVARO OBREGON" %}selected{% endif %}>ÁLVARO OBREGÓN</option>
+                            <option value="AZCAPOTZALCO" {% if alcaldia == "AZCAPOTZALCO" %}selected{% endif %}>AZCAPOTZALCO</option>
+                            <option value="BENITO JUAREZ" {% if alcaldia == "BENITO JUAREZ" %}selected{% endif %}>BENITO JUÁREZ</option>
+                            <option value="COYOACAN" {% if alcaldia == "COYOACAN" %}selected{% endif %}>COYOACÁN</option>
+                            <option value="CUAJIMALPA DE MORELOS" {% if alcaldia == "CUAJIMALPA DE MORELOS" %}selected{% endif %}>CUAJIMALPA DE MORELOS</option>
+                            <option value="CUAUHTEMOC" {% if alcaldia == "CUAUHTEMOC" %}selected{% endif %}>CUAUHTÉMOC</option>
+                            <option value="GUSTAVO A. MADERO" {% if alcaldia == "GUSTAVO A. MADERO" %}selected{% endif %}>GUSTAVO A. MADERO</option>
+                            <option value="IZTACALCO" {% if alcaldia == "IZTACALCO" %}selected{% endif %}>IZTACALCO</option>
+                            <option value="IZTAPALAPA" {% if alcaldia == "IZTAPALAPA" %}selected{% endif %}>IZTAPALAPA</option>
+                            <option value="LA MAGDALENA CONTRERAS" {% if alcaldia == "LA MAGDALENA CONTRERAS" %}selected{% endif %}>LA MAGDALENA CONTRERAS</option>
+                            <option value="MIGUEL HIDALGO" {% if alcaldia == "MIGUEL HIDALGO" %}selected{% endif %}>MIGUEL HIDALGO</option>
+                            <option value="MILPA ALTA" {% if alcaldia == "MILPA ALTA" %}selected{% endif %}>MILPA ALTA</option>
+                            <option value="TLAHUAC" {% if alcaldia == "TLAHUAC" %}selected{% endif %}>TLAHUAC</option>
+                            <option value="TLALPAN" {% if alcaldia == "TLALPAN" %}selected{% endif %}>TLALPAN</option>
+                            <option value="VENUSTIANO CARRANZA" {% if alcaldia == "VENUSTIANO CARRANZA" %}selected{% endif %}>VENUSTIANO CARRANZA</option>
+                            <option value="XOCHIMILCO" {% if alcaldia == "XOCHIMILCO" %}selected{% endif %}>XOCHIMILCO</option>  
+                        </select>
+                    </div>
+                
+                    <!-- Filtro: Fecha -->
+                    <div class="form-group mb-0">
+                        <label for="fecha_filtro">Fecha</label>
+                        <select class="form-control" name="fecha_filtro" id="fecha_filtro">
+                            <option value="" {% if not fecha %}selected{% endif %}>Todas</option>
+                            <option value="mas reciente" {% if fecha == "mas reciente" %}selected{% endif %}>Más reciente</option>
+                            <option value="menos reciente" {% if fecha == "menos reciente" %}selected{% endif %}>Más antiguo</option>
+                        </select>
+                    </div>
+
+                    <!-- Seleccion de grupos de incidencias a mostrar en el mapa -->
+                    <div class="form-group mb-0">
+                        <label for="grupos_incidencias">Grupos de incidencias</label>
+                        <input type="number" class="form-control" name="grupos_incidencias" id="grupos_incidencias" value="{{ gruposIncidencias|default:'10' }}" min="10" max="100">
+                    </div>
+                
+                    <div class="form-group mb-0">
+                        <button type="submit" class="btn btn-success">Filtrar</button>
+                    </div>
+                </form>
             </div>
-        
-            <!-- Filtro: Alcaldia -->
-            <div class="form-group mb-0">
-                <label for="alcaldia_filtro">Alcaldía</label>
-                <select class="form-control" name="alcaldia_filtro" id="alcaldia_filtro">
-                    <option value="" {% if not alcaldia %}selected{% endif %}>Todas</option>
-                    <option value="ALVARO OBREGON" {% if alcaldia == "ALVARO OBREGON" %}selected{% endif %}>ÁLVARO OBREGÓN</option>
-                    <option value="AZCAPOTZALCO" {% if alcaldia == "AZCAPOTZALCO" %}selected{% endif %}>AZCAPOTZALCO</option>
-                    <option value="BENITO JUAREZ" {% if alcaldia == "BENITO JUAREZ" %}selected{% endif %}>BENITO JUÁREZ</option>
-                    <option value="COYOACAN" {% if alcaldia == "COYOACAN" %}selected{% endif %}>COYOACÁN</option>
-                    <option value="CUAJIMALPA DE MORELOS" {% if alcaldia == "CUAJIMALPA DE MORELOS" %}selected{% endif %}>CUAJIMALPA DE MORELOS</option>
-                    <option value="CUAUHTEMOC" {% if alcaldia == "CUAUHTEMOC" %}selected{% endif %}>CUAUHTÉMOC</option>
-                    <option value="GUSTAVO A. MADERO" {% if alcaldia == "GUSTAVO A. MADERO" %}selected{% endif %}>GUSTAVO A. MADERO</option>
-                    <option value="IZTACALCO" {% if alcaldia == "IZTACALCO" %}selected{% endif %}>IZTACALCO</option>
-                    <option value="IZTAPALAPA" {% if alcaldia == "IZTAPALAPA" %}selected{% endif %}>IZTAPALAPA</option>
-                    <option value="LA MAGDALENA CONTRERAS" {% if alcaldia == "LA MAGDALENA CONTRERAS" %}selected{% endif %}>LA MAGDALENA CONTRERAS</option>
-                    <option value="MIGUEL HIDALGO" {% if alcaldia == "MIGUEL HIDALGO" %}selected{% endif %}>MIGUEL HIDALGO</option>
-                    <option value="MILPA ALTA" {% if alcaldia == "MILPA ALTA" %}selected{% endif %}>MILPA ALTA</option>
-                    <option value="TLAHUAC" {% if alcaldia == "TLAHUAC" %}selected{% endif %}>TLAHUAC</option>
-                    <option value="TLALPAN" {% if alcaldia == "TLALPAN" %}selected{% endif %}>TLALPAN</option>
-                    <option value="VENUSTIANO CARRANZA" {% if alcaldia == "VENUSTIANO CARRANZA" %}selected{% endif %}>VENUSTIANO CARRANZA</option>
-                    <option value="XOCHIMILCO" {% if alcaldia == "XOCHIMILCO" %}selected{% endif %}>XOCHIMILCO</option>  
-                </select>
-            </div>
-        
-            <!-- Filtro: Fecha -->
-            <div class="form-group mb-0">
-                <label for="fecha_filtro">Fecha</label>
-                <select class="form-control" name="fecha_filtro" id="fecha_filtro">
-                    <option value="" {% if not fecha %}selected{% endif %}>Todas</option>
-                    <option value="mas reciente" {% if fecha == "mas reciente" %}selected{% endif %}>Más reciente</option>
-                    <option value="menos reciente" {% if fecha == "menos reciente" %}selected{% endif %}>Más antiguo</option>
-                </select>
-            </div>
-        
-            <div class="form-group mb-0">
-                <button type="submit" class="btn btn-success">Filtrar</button>
-            </div>
-        </form>
+        </div>
     </div>
+    <br>
 
     <div class="form-group mb-0 d-flex justify-content-center align-items-center">
             <a href="crear_reporte/" class="btn btn-primary">Reportar incidencia</a>
     </div>
     <br>
 
+    <!-- MAPA CON LAS UBICACIONES DE LAS INCIDENCIAS AGRUPADAS --> 
+    <div class="card text-center">
+        <div class="card-header">
+            <h2>Mapa de Incidencias Delictivas</h2>
+        </div>
+        <div class="card-body">
+            <div id="mapa" style="height: 300px; margin-bottom: 1em;"></div>
+        </div>
+    </div>
+    <br>
+    
     <!-- NAVEGACION ENTRE PAGINAS -->
     <div class="pagination d-flex justify-content-center align-items-center">
     {% if reportesID.has_previous %}
         <a href="?page=1&categoria_filtro={{ categoria }}&impacto_filtro={{ impacto }}&alcaldia_filtro={{ alcaldia }}&fecha_filtro={{ fecha }}" class="btn btn-secondary">Primera</a>
         <a href="?page={{ reportesID.previous_page_number }}&categoria_filtro={{ categoria }}&impacto_filtro={{ impacto }}&alcaldia_filtro={{ alcaldia }}&fecha_filtro={{ fecha }}" class="btn btn-secondary">Anterior</a>
     {% endif %}
-
         <span>Página {{ reportesID.number }} de {{ reportesID.paginator.num_pages }}</span>
-
     {% if reportesID.has_next %}
         <a href="?page={{ reportesID.next_page_number }}&categoria_filtro={{ categoria }}&impacto_filtro={{ impacto }}&alcaldia_filtro={{ alcaldia }}&fecha_filtro={{ fecha }}" class="btn btn-secondary">Siguiente</a>
         <a href="?page={{ reportesID.paginator.num_pages }}&categoria_filtro={{ categoria }}&impacto_filtro={{ impacto }}&alcaldia_filtro={{ alcaldia }}&fecha_filtro={{ fecha }}" class="btn btn-secondary">Última</a>
     {% endif %}
     </div>
-
-
     <!-- TABLA DE INCIDENCIAS -->
     <div class="container-fluid my-3">
         <h3>Listado de incidencias delictivas</h3>
@@ -142,20 +162,22 @@
             </table>
         </div>
     </div>
-
     <!-- NAVEGACION ENTRE PAGINAS -->
     <div class="pagination d-flex justify-content-center align-items-center">
     {% if reportesID.has_previous %}
         <a href="?page=1&categoria_filtro={{ categoria }}&impacto_filtro={{ impacto }}&alcaldia_filtro={{ alcaldia }}&fecha_filtro={{ fecha }}" class="btn btn-secondary">Primera</a>
         <a href="?page={{ reportesID.previous_page_number }}&categoria_filtro={{ categoria }}&impacto_filtro={{ impacto }}&alcaldia_filtro={{ alcaldia }}&fecha_filtro={{ fecha }}" class="btn btn-secondary">Anterior</a>
     {% endif %}
-
         <span>Página {{ reportesID.number }} de {{ reportesID.paginator.num_pages }}</span>
-
     {% if reportesID.has_next %}
         <a href="?page={{ reportesID.next_page_number }}&categoria_filtro={{ categoria }}&impacto_filtro={{ impacto }}&alcaldia_filtro={{ alcaldia }}&fecha_filtro={{ fecha }}" class="btn btn-secondary">Siguiente</a>
         <a href="?page={{ reportesID.paginator.num_pages }}&categoria_filtro={{ categoria }}&impacto_filtro={{ impacto }}&alcaldia_filtro={{ alcaldia }}&fecha_filtro={{ fecha }}" class="btn btn-secondary">Última</a>
     {% endif %}
     </div>
-
+    
+    {{ clusters|json_script:"clusters-data" }}
+    <script>
+        var clusters = JSON.parse(document.getElementById('clusters-data').textContent);
+    </script>
+    <script src="{% static 'js/mapaPrincipal.js' %}"></script>
 {% endblock %}
