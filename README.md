@@ -1,4 +1,4 @@
-#**NOMBRE DEL PROYECTO: Sistema geográfico para la gestión de reportes de incidencias delictivas**
+# **Sistema geográfico para la gestión de reportes de incidencias delictivas**
 
 [![Estado del Proyecto](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow.svg)](URL_DEL_REPOSITORIO)
 
@@ -29,7 +29,7 @@ Lista de las herramientas y tecnologías principales utilizadas en el proyecto.
 
 ---
 
-## 🛠️ 2. Configuración del Entorno (Guía Rápida)
+## 2. Configuración del Entorno (Guía Rápida)
 
 Sigue estos pasos para tener la aplicación funcionando en tu máquina local.
 
@@ -46,15 +46,14 @@ Asegúrate de tener instalado:
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone **[https://github.com/AngelFlores123/GestionIncidenciasDelictivas-Django/tree/master)**
-    cd **[NOMBRE DE LA CARPETA DEL PROYECTO]**
+    cd /ruta/NOMBRE_DE_CARPETA/ # Navega a la carpeta donde quieres clonarlo
+    git clone https://github.com/AngelFlores123/GestionIncidenciasDelictivas-Django.git
     ```
 
 2.  **Crear y activar el entorno virtual:**
     ```bash
     python -m venv venv
-    source venv/bin/activate  # En Linux/macOS
-    # venv\Scripts\activate   # En Windows
+    venv\Scripts\activate   # En Windows
     ```
 
 3.  **Instalar dependencias de Python:**
@@ -68,20 +67,46 @@ Asegúrate de tener instalado:
         ```sql
         CREATE EXTENSION postgis;
         ```
-    * Asegúrate de que tu archivo `settings.py` esté configurado con las credenciales de tu base de datos.
+    * Asegúrate de que tu archivo `settings.py` en el proyecto Django esté configurado con las credenciales de tu base de datos.
+      ```bash
+      DATABASES = {
+      'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',  # No 'django.db.backends.postgresql'
+        'NAME': 'my_app_db',
+        'USER': '...',
+        'PASSWORD': '...',
+        'HOST': 'localhost',
+        'PORT': '5432',
+       }
+      }
+      ```
+    * Modifica las rutas de las librerias al final de `settings.py`:
+      ```bash
+      GDAL_LIBRARY_PATH = r'C:\Users\...\envs\geodjango_env\Library\bin\gdal.dll'
+      GEOS_LIBRARY_PATH = r'C:\Users\...\envs\geodjango_env\Library\bin\geos_c.dll'
+      ```
+
+    * Para cargar datos de un archivo, geojson o shapefile, a la base de datos, hacer lo siguiente:
+    1. Vamos a usar la herramienta de GDAL llamada `ogr2ogr`.
+    2. Con el software QGIS instalado, abrir la consola `OSGeo4W Shell`.
+    3. Dentro, dirigete a la carpeta donde se encuentra el dataset.
+       ```bash
+       cd C:User/ruta/carpeta
+       ```
+    4. Ejecuta el siguiente comando (quitar `-nlt MultiPolygon` si el dataset solo contiene puntos, lineas o poligonos simples):
+       ```bash
+       ogr2ogr -f "PostgreSQL" PG:"dbname=NOMBRE_DE_TU_BD host=localhost port=5432 user=TU_USUARIO password=TU_CONTRASENA" "NOMBRE_DATASET.geojson/.shp" -nlt MultiPolygon
+       ```
+    5. Ahora podrá ver sus datos en una tabla en su base de datos.
 
 5.  **Ejecutar Migraciones:**
+    * Ejecutar en la terminal en la raíz de proyecto con el entorno virtual activado:
     ```bash
     python manage.py makemigrations
     python manage.py migrate
     ```
 
-6.  **Crear Superusuario (Opcional, para acceso Admin):**
-    ```bash
-    python manage.py createsuperuser
-    ```
-
-7.  **Iniciar el Servidor:**
+6.  **Iniciar el Servidor:**
     ```bash
     python manage.py runserver
     ```
@@ -89,28 +114,15 @@ Asegúrate de tener instalado:
 
 ---
 
-## 📐 3. Estructura y Modelos de Datos
+## 3. Estructura y Modelos de Datos
 
 ### 3.1. Arquitectura de Apps de Django
 
 | App | Propósito | URL Base |
 | :--- | :--- | :--- |
-| `core` | Configuraciones principales del proyecto. | N/A |
-| `**[NOMBRE DE TU APP CRUD]**` | Contiene los Modelos, Vistas y Templates para el CRUD de **[ENTIDAD]**. | `/lugares/` |
+| `sid` | Configuraciones principales del proyecto. | NA |
+| `**principal**` | Contiene los Modelos, Vistas y Templates para el CRUD de **[ENTIDAD]**. | `/` |
 
 ### 3.2. Modelo Geográfico Principal
 
-El modelo clave que utiliza PostGIS es `**[NOMBRE DEL MODELO, ej: Lugar, Servicio, Área]**`.
-
-```python
-# Fragmento clave de [APP_NAME]/models.py
-
-from django.contrib.gis.db import models
-
-class **[NOMBRE DEL MODELO]**(models.Model):
-    nombre = models.CharField(max_length=255)
-    descripcion = models.TextField()
-    # Campo geográfico clave de PostGIS
-    ubicacion = models.PointField() 
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    # ... otros campos
+E
