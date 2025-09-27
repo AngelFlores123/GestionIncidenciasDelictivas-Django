@@ -29,3 +29,15 @@ class ReportesIncidenciau(models.Model):
     class Meta:
         managed = False # indica que Django no debe gestionar la tabla (crear, modificar o eliminar)
         db_table = 'reportes_incidenciau'
+
+class LimiteDeLasAlcaldas(models.Model):
+    laid = models.AutoField(primary_key=True)
+    wkb_geometry = models.PolygonField(blank=True, null=True)
+    cvegeo = models.CharField(blank=True, null=True)
+    cve_ent = models.CharField(blank=True, null=True)
+    cve_mun = models.CharField(blank=True, null=True)
+    nomgeo = models.CharField(blank=True, null=True) # nombre de la alcaldia
+
+    class Meta:
+        managed = False
+        db_table = 'limite_de_las_alcaldas'

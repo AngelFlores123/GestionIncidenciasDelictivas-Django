@@ -175,9 +175,20 @@
     {% endif %}
     </div>
     
-    {{ clusters|json_script:"clusters-data" }}
+    <!--{{ semillas|json_script:"semillas-data" }}
+    {{ reportesJSON|json_script:"reportes-data" }}1-->
+
+{% endblock %}
+
+{% block extra_js %}
     <script>
-        var clusters = JSON.parse(document.getElementById('clusters-data').textContent);
+        //var semillas = document.getElementById('semillas-data').textContent;
+        //var reportes = document.getElementById('reportes-data').textContent;
+        var semillas = '{{ semillas|safe }}';
+        var cdmx_division = '{{ cdmx_division|safe }}';
+        var alcaldia = '{{ alcaldia|safe }}';
+        //var reportes = '{{ reportesJSON|safe }}';
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     <script src="{% static 'js/mapaPrincipal.js' %}"></script>
 {% endblock %}

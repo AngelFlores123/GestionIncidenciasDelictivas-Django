@@ -8,4 +8,5 @@ urlpatterns = [
     path('eliminar_reporte/<gid>/', views.eliminar_reporte),
     path('editar_reporte/<gid>/', views.editar_reporte),
     path('editar_reporte/actualizar_reporte/<gid>/', views.actualizar_reporte),
+    path('api/reportes/', views.api_reportes, name='api_reportes'), # api para transferir datos de reportes en formato JSON
 ]

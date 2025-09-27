@@ -1,19 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import ReportesIncidenciau
+from .models import ReportesIncidenciau, LimiteDeLasAlcaldas
 from django.core.paginator import Paginator
 import json
-import random
 from collections import defaultdict
 import numpy as np
+from django.http import JsonResponse
+from django.core.serializers import serialize
+
 
 # Create your views here.
+def api_reportes(request):
+    reportes = list(ReportesIncidenciau.objects.values('gid', 'alcaldia', 'latitud', 'longitud'))
+    return JsonResponse(reportes, safe=False)
+
 def home(request):
     reportes_list = ReportesIncidenciau.objects.all()  # Obtiene todos los reportes de la base de datos
+    cdmx_division = LimiteDeLasAlcaldas.objects.all()  # delimitacion de las alcaldias de la CDMX
     categoria = request.GET.get('categoria_filtro')
     impacto = request.GET.get('impacto_filtro')
     alcaldia = request.GET.get('alcaldia_filtro')
     fecha = request.GET.get('fecha_filtro')
     gruposIncidencias = request.GET.get('grupos_incidencias')
+    incidencias_x_alcaldia = None
 
     # FILTROS
 
@@ -29,6 +37,7 @@ def home(request):
         reportes_list = reportes_list.filter(
             alcaldia__icontains=alcaldia
         )
+        incidencias_x_alcaldia = reportes_list
     if fecha:
         if fecha == 'mas reciente':
             reportes_list = reportes_list.order_by('-anio_hecho')
@@ -39,47 +48,52 @@ def home(request):
     no_pag = request.GET.get('page')
     pagina = paginador.get_page(no_pag)
 
-    # AGRUPAMIENTO DE INCIDENCIAS
-
-    ubicaciones = list(ReportesIncidenciau.objects.values('gid', 'id_delito', 'latitud', 'longitud'))
-
-    # Si se selecciona un grupo de incidencias, limita el numero de reportes en el mapa
+    # se eligen n reportes aleatorios como semillas (puntos representativos de un grupo de incidencias)
     n = int(gruposIncidencias) if gruposIncidencias else 10
-    n = min(n, len(ubicaciones))  # se limita n al tamano de la lista (no es necesario ya que en el template se limita el numero de reportes a mostrar)
-    centroidesK = random.sample(ubicaciones, n) # selecciona n elementos aleatorios sin repetición
-    
-    # se vectorizan las ubicaciones de las incidencias y los centroides 
-    ubicaciones_np = np.array([[u['latitud'], u['longitud']] for u in ubicaciones])
-    centroides_np = np.array([[c['latitud'], c['longitud']] for c in centroidesK])
-    distancias = np.linalg.norm(ubicaciones_np[:, np.newaxis, :] - centroides_np[np.newaxis, :, :], axis=2)  # calcula la distancia euclidiana entre cada ubicacion y cada centroide
-    indices_min = np.argmin(distancias, axis=1)  # devuelve los indices de los centroides mas cercanos a cada ubicacion
+    if(incidencias_x_alcaldia is None): # si no se ha filtrado por alcaldia, se eligen las semillas de todos los reportes
+        semillas = list(ReportesIncidenciau.objects.order_by('?').values('gid', 'alcaldia', 'latitud', 'longitud')[:n])
+    else: # si se ha filtrado por alcaldia, se eligen las semillas de los reportes de esa alcaldia
+        semillas = list(incidencias_x_alcaldia.order_by('?').values('gid', 'alcaldia', 'latitud', 'longitud')[:n])
+    # la clusterizacion se hace en el cliente (javascript con voronoi) para evitar sobrecargar el servidor
+    cdmx_division_geojson = json.loads(serialize('geojson', cdmx_division, geometry_field='wkb_geometry', fields=('laid', 'nomgeo'))) # convierte las divisiones de la CDMX a formato GeoJSON
 
-    clusters = defaultdict(list)
-    for idx_ubic, idx_centroide in enumerate(indices_min):
-        centroide_gid = centroidesK[idx_centroide]['gid'] # obtiene el gid del centroide con el indice idx_centroide
-        clusters[centroide_gid].append(ubicaciones[idx_ubic]) # agrupa las ubicaciones por el gid del centroide mas cercano
-        
-    # se saca el promedio de las ubicaciones de cada cluster para obtener un nuevo centroide mas representativo
-    for centroide_gid, ubicaciones_cluster in clusters.items():
-        latitudes = [u['latitud'] for u in ubicaciones_cluster]
-        longitudes = [u['longitud'] for u in ubicaciones_cluster]
-        promedio_lat = sum(latitudes) / len(latitudes)
-        promedio_long = sum(longitudes) / len(longitudes)
-        clusters[centroide_gid] = {
-            'gid': centroide_gid,
-            'latitud': promedio_lat,
-            'longitud': promedio_long,
-            #'ubicaciones': ubicaciones_cluster
-            'noIncidencias': len(ubicaciones_cluster)  # numero de incidencias en el cluster
-        }
 
-    #for ubicacion in ubicaciones:
-    #    distancias = {}
-    #    for centroideK in centroidesK:
-    #        distancia = ((ubicacion['latitud'] - centroideK['latitud']) ** 2 + (ubicacion['longitud'] - centroideK['longitud']) ** 2) ** 0.5
-    #        distancias[centroideK['gid']] = distancia
-    #    centroide_min = min(distancias, key=distancias.get) # gid (clave) del centroide con la distancia minima a la ubicacion actual
-    #    clusters[centroide_min].append(ubicacion) # coloca la ubicacion en el cluster del centroide minimo correspondiente 
+    ######    # AGRUPAMIENTO DE INCIDENCIAS
+######    
+    ######    ubicaciones = list(ReportesIncidenciau.objects.values('gid', 'id_delito', 'latitud', 'longitud'))
+######    
+    ######    # Si se selecciona un grupo de incidencias, limita el numero de reportes en el mapa
+    ######    n = int(gruposIncidencias) if gruposIncidencias else 10
+    ######    n = min(n, len(ubicaciones))  # se limita n al tamano de la lista (no es necesario ya que en el template se limita el numero de reportes a mostrar)
+    ######    centroidesK = random.sample(ubicaciones, n) # selecciona n elementos aleatorios sin repetición
+    ######    
+    ######    # se vectorizan las ubicaciones de las incidencias y los centroides 
+    ######    ubicaciones_np = np.array([[u['latitud'], u['longitud']] for u in ubicaciones])
+    ######    centroides_np = np.array([[c['latitud'], c['longitud']] for c in centroidesK])
+    ######    distancias = np.linalg.norm(ubicaciones_np[:, np.newaxis, :] - centroides_np[np.newaxis, :, :], axis=2)  # calcula la distancia euclidiana entre cada ubicacion y cada centroide
+    ######    indices_min = np.argmin(distancias, axis=1)  # devuelve los indices de los centroides mas cercanos a cada ubicacion
+######    
+    ######    clusters = defaultdict(list)
+    ######    for idx_ubic, idx_centroide in enumerate(indices_min):
+    ######        centroide_gid = centroidesK[idx_centroide]['gid'] # obtiene el gid del centroide con el indice idx_centroide
+    ######        clusters[centroide_gid].append(ubicaciones[idx_ubic]) # agrupa las ubicaciones por el gid del centroide mas cercano
+    ######        
+    ######    # se saca el promedio de las ubicaciones de cada cluster para obtener un nuevo centroide mas representativo
+    ######    for centroide_gid, ubicaciones_cluster in clusters.items():
+    ######        latitudes = [u['latitud'] for u in ubicaciones_cluster]
+    ######        longitudes = [u['longitud'] for u in ubicaciones_cluster]
+    ######        promedio_lat = sum(latitudes) / len(latitudes)
+    ######        promedio_long = sum(longitudes) / len(longitudes)
+    ######        clusters[centroide_gid] = {
+    ######            'gid': centroide_gid,
+    ######            'latitud': promedio_lat,
+    ######            'longitud': promedio_long,
+    ######            #'ubicaciones': ubicaciones_cluster
+    ######            'noIncidencias': len(ubicaciones_cluster)  # numero de incidencias en el cluster
+    ######        }
+
+
+
 
     context = {
         'reportesID': pagina,
@@ -88,8 +102,9 @@ def home(request):
         'alcaldia': alcaldia,
         'fecha': fecha,
         'gruposIncidencias': gruposIncidencias,
-        #'ubicaciones': ubicaciones  # Convierte las ubicaciones a formato JSON para usar en el mapa
-        'clusters': json.dumps(list(clusters.values())),  # convierte los clusters a formato JSON para usar en el mapa
+        'semillas': json.dumps(semillas), # Convierte las semillas a formato JSON para usar en el mapa
+        'cdmx_division': json.dumps(cdmx_division_geojson), # Convierte las divisiones de la CDMX a formato JSON para usar en el mapa
+        #'reportesJSON': json.dumps(ReportesIncidenciau.objects.values('longitud','latitud')), # Convierte los reportes filtrados a formato JSON para usar en el mapa
     }
     
     return render(request, 'principal.html', context)
