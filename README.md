@@ -163,7 +163,7 @@ class LimiteDeLasAlcaldas(models.Model):
 
 #### 4.1.1. Vistas (`views.py`)
 
-* **`home(request)`**
+### **`home(request)`**
 
 #### Descripción general
 Esta es una vista compleja que combina el filtrado con la preparación de datos geográficos (GeoJSON y puntos) para el frontend. En ella de enlista reportes de incidencias delictivas con filtros, paginación y datos para el mapa.
@@ -236,7 +236,7 @@ Se muestran 15 reportes por página con `Paginator`
 * JSON
 * serialize (GeoJSON)
 
-* **`crear_reporte(request)`**
+### **`crear_reporte(request)`**
 
 #### Descripción
 Muestra el formulario para crear un reporte.
@@ -251,7 +251,7 @@ Renderiza el template `crear_reporte.html`.
 * Template: `crear_reporte.html`
 * Propósito: Página que muestra un formulario con los campos para que el usuario genere un nuevo reporte.
 
-* **`guardar_reporte(request)`**
+### **`guardar_reporte(request)`**
 
 #### Descripción
 Crea un reporte con datos POST.
@@ -283,7 +283,7 @@ Crea un reporte con datos POST.
 #### Redirección
 * Template: `principal.html`
 
-* **`eliminar_reporte(request, gid)`**
+### **`eliminar_reporte(request, gid)`**
 
 #### Descripción
 Elimina un reporte por gid.
@@ -303,7 +303,7 @@ Elimina un reporte por gid.
 #### Redirección
 * Template: `principal.html`
 
-* **`editar_reporte(request, gid)`**
+### **`editar_reporte(request, gid)`**
 
 #### Descripción
 Muestra el formulario de edición y el mapa del reporte.
@@ -327,7 +327,7 @@ Muestra el formulario de edición y el mapa del reporte.
 #### Manejo de Errores
 * 404 si no existe.
 
-* **`actualizar_reporte(request, gid)`**
+### **`actualizar_reporte(request, gid)`**
 
 #### Descripción
 Actualiza un reporte con datos POST.
@@ -366,7 +366,7 @@ Redirección
 #### Redirección
 * Template: `principal.html`
 
-* **`api_reportes`**
+### **`api_reportes`**
   
 #### Descripción
 API que devuelve reportes en JSON para el mapa.
@@ -410,7 +410,7 @@ graph TD
 
 #### 4.1.3. Static (funcionamiento de los mapas)
 
-* **`mapa.js`**
+### **`mapa.js`**
 
 #### Descripción General
 Inicializa un mapa interactivo con Leaflet para seleccionar coordenadas en formularios de reportes.
@@ -551,7 +551,8 @@ graph TD
 * Marcador único por mapa.
 * Campos de entrada se actualizan en tiempo real.
 
-* **`mapaPrincipal.js`**
+
+### **`mapaPrincipal.js`**
 
 #### Descripción General
 Inicializa el mapa principal con diagramas de Voronoi para agrupar incidencias delictivas en la CDMX, ya sea a nivel estatal o por cada alcaldia.
