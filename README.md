@@ -653,7 +653,7 @@ let vor = turf.voronoi(semillasFC, { bbox: bboxCDMX });
 * Genera Voronoi usando el bbox de CDMX.
 * El bbox es un área rectangular que abarca todos los puntos de la colección `cdmx_divFC`.
 
-### 8. Recorte de Celdas por Límites de Alcaldías
+8. **Recorte de Celdas por Límites de Alcaldías**
 ```javascript
 vor.features = vor.features.map(cell => {
     let clipped = null;
